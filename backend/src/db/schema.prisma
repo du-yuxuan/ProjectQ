@@ -1,0 +1,140 @@
+// Prisma schema — Q v17（PICO 中心化架构）
+// 新增：WalletAddress（钱包登录）、HeartRateRecord（心率记录）、
+//       AudienceFeedback（观众反馈）、SpeciesMapping（物种映射）
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String?
+  createdAt DateTime @default(now())
+
+  sessions    Session[]
+  credentials  Credential[]
+  profiles    ProfileSnapshot[]
+  walletAddrs  WalletAddress[]
+  heartRates  HeartRateRecord[]
+}
+
+model Session {
+  id           String    @id @default(uuid())
+  userId       String
+  startTime    DateTime  @default(now())
+  endTime      DateTime?
+  duration     Int?      // 秒
+  overallScore Int?      // 0-10
+  transcript   String?  // 完整转写文本
+  // v17: 钱包地址（会话绑定）
+  walletAddress String?
+
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  segments   Segment[]
+  hookEvents HookEvent[]
+  audienceFeedback AudienceFeedback[]
+}
+
+model Segment {
+  id           String @id @default(uuid())
+  sessionId    String
+  ts           Int    // 相对于会话起始的秒数
+  duration     Int    // 本段持续秒数
+  fluencyScore Int?   // 0-10
+  logicScore   Int?   // 0-10
+  paceScore   Int?   // 0-10
+  receptionScore Int? // v17: 观众接收度 0-10（来自 PICO 摄像头）
+  fillerCount  Int?
+  pauseCount   Int?
+  text         String?
+
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+}
+
+model HookEvent {
+  id             String  @id @default(uuid())
+  sessionId      String
+  ts             Int
+  hookType       String  // "开口"|"思路"|"衔接"|"节奏"
+  hookText       String
+  countdown      Int     // 倒计时秒数
+  responseTimeMs Int?    // 用户接话时间（EMA 自适应记录）
+  recovered      Boolean? // 是否恢复
+  feedback       Int?    // 用户评价 -1/0/1
+
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+}
+
+model ProfileSnapshot {
+  id           String   @id @default(uuid())
+  userId       String
+  snapshotDate DateTime @default(now())
+
+  // JSON: { fluencyAvg, logicAvg, paceAvg, receptionAvg, sessionsCount, totalDuration }
+  metrics String
+
+  // JSON: [ "语气词太多", "停顿过长" ]
+  weaknesses String
+
+  // JSON: [ "选题清晰", "语速控制好" ]
+  strengths String
+
+  // JSON: [ {date, fluencyAvg, logicAvg, paceAvg, receptionAvg}, ... ]
+  trendData String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Credential {
+  id          String   @id @default(uuid())
+  userId      String
+  chainTxHash String   // Injective 交易哈希
+  milestone   String   // 里程碑名称
+  mintedAt    DateTime @default(now())
+  metadata    String?  // JSON: {credential_type, level, metrics, improvement_curve, ...}
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// v17 新增：钱包地址（WalletStrategy 登录）
+model WalletAddress {
+  id        String   @id @default(uuid())
+  userId    String   // 关联的本地用户
+  address   String   // Injective 钱包地址（inj1...）
+  walletType String  // keplr | metamask | walletconnect | leap | ledger
+  connectedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([address])
+}
+
+// v17 新增：心率记录（手动输入面板）
+model HeartRateRecord {
+  id        String   @id @default(uuid())
+  userId    String
+  sessionId String?
+  bpm       Int      // 心率值
+  ts        Int      // 会话内秒数
+  tension   String   // calm | normal | tense | panic
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// v17 新增：观众反馈（PICO 摄像头 SpatialML）
+model AudienceFeedback {
+  id           String @id @default(uuid())
+  sessionId    String
+  ts           Int    // 会话内秒数
+  attentive    Int    // 专注人数
+  distracted   Int    // 走神人数
+  receptionScore Int? // 接收度 0-10
+
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+}

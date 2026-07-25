@@ -1,0 +1,18 @@
+{
+  "name": "com.bytedance.pico.ui",
+  "displayName": "PICO UI",
+  "version": "0.0.2",
+  "unity": "2022.3",
+  "description": "A convenient UI 3D construction tool based on Unity GUI.",
+  "keywords": [
+    "pico",
+    "xr",
+    "vr",
+    "GUI"
+  ],
+  "dependencies": {
+    "com.unity.ugui": "1.0.0",
+    "com.unity.textmeshpro": "3.0.0",
+    "com.unity.xr.interaction.toolkit": "2.0.0"
+  }
+}

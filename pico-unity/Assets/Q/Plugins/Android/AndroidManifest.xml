@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:versionCode="1"
+    android:versionName="17.0.0"
+    package="com.adventurex.qcue">
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" android:usesPermissionFlags="neverForLocation" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-feature android:name="android.hardware.vr.headtracking" android:required="true" />
+    <uses-feature android:name="android.hardware.vr.headset" android:required="true" />
+    <uses-feature android:glEsVersion="0x00030001" android:required="true" />
+
+    <application
+        android:allowBackup="false"
+        android:label="Q-Cue"
+        android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+        android:vrApplication="true">
+
+        <!-- PICO 视频透视权限 -->
+        <meta-data android:name="pvr.app.vst.enable" android:value="1" />
+        <!-- PICO SecureMR 权限 -->
+        <meta-data android:name="pvr.app.securemr.enable" android:value="1" />
+        <!-- PICO 手势追踪 -->
+        <meta-data android:name="Hand_Tracking_HighFrequency" android:value="0" />
+        <!-- PICO 空间数据权限 -->
+        <meta-data android:name="pvr.app.spatialdata.enable" android:value="1" />
+
+        <activity
+            android:name="com.unity3d.player.UnityPlayerActivity"
+            android:configChanges="locale|fontScale|keyboard|keyboardHidden|mcc|mnc|navigation|orientation|screenLayout|screenSize|uiMode|touchscreen"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

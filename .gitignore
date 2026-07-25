@@ -1,0 +1,57 @@
+# ===== Deprecated platform versions (superseded by pico-unity) =====
+pico-android/
+pico-spatial/
+
+# ===== macOS =====
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# ===== Build artifacts (root) =====
+/Build/
+
+# ===== Node / Backend =====
+node_modules/
+backend/.env
+backend/src/db/*.db
+backend/src/db/*.db-journal
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ===== Unity =====
+pico-unity/Library/
+pico-unity/Temp/
+pico-unity/Obj/
+pico-unity/Build/
+pico-unity/Builds/
+pico-unity/Logs/
+pico-unity/UserSettings/
+pico-unity/MemoryCaptures/
+pico-unity/Recordings/
+pico-unity/r.apk
+*.apk
+*.aab
+*.unitypackage
+# Unity generated solution/project files
+*.csproj
+*.sln
+*.user
+*.pidb
+*.booproj
+*.svd
+*.mdb
+
+# ===== Rust / Injective =====
+injective/target/
+injective/.cargo/
+
+# ===== Editor / IDE =====
+.vscode/
+.idea/
+*.swp
+
+# ===== Misc runtime =====
+*.local

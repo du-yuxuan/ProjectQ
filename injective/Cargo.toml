@@ -1,0 +1,29 @@
+[package]
+name = "q-credential-contract"
+version = "0.2.0"
+edition = "2021"
+description = "Q (Cue) soulbound expression credential contract for Injective (Module C, v17 spec)"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+cosmwasm-std = { version = "2.1", features = ["staking"] }
+cosmwasm-schema = "2.1"
+serde = { version = "1.0", features = ["derive"] }
+serde-json-wasm = "1.0"
+thiserror = "1.0"
+
+[profile.release]
+# CosmWasm 优化配置
+opt-level = 3
+debug = false
+rpath = false
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+
+[profile.dev]
+opt-level = 0
+debug = true
