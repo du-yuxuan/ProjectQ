@@ -1,0 +1,94 @@
+// Prisma schema — Unfreeze 验证版
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String?
+  createdAt DateTime @default(now())
+
+  sessions    Session[]
+  credentials  Credential[]
+  profiles    ProfileSnapshot[]
+}
+
+model Session {
+  id           String    @id @default(uuid())
+  userId       String
+  startTime    DateTime  @default(now())
+  endTime      DateTime?
+  duration     Int?      // 秒
+  overallScore Int?      // 0-10
+  transcript   String?  // 完整转写文本
+
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  segments   Segment[]
+  hookEvents HookEvent[]
+}
+
+model Segment {
+  id           String @id @default(uuid())
+  sessionId    String
+  ts           Int    // 相对于会话起始的秒数
+  duration     Int    // 本段持续秒数
+  fluencyScore Int?   // 0-10
+  logicScore   Int?   // 0-10
+  paceScore    Int?   // 0-10
+  fillerCount  Int?
+  pauseCount   Int?
+  text         String?
+
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+}
+
+model HookEvent {
+  id             String  @id @default(uuid())
+  sessionId      String
+  ts             Int
+  hookType       String  // "开口"|"思路"|"衔接"|"节奏"
+  hookText       String
+  countdown      Int     // 倒计时秒数
+  responseTimeMs Int?    // 用户接花时间
+  recovered      Boolean? // 是否恢复
+  feedback       Int?    // 用户评价 -1/0/1
+
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+}
+
+model ProfileSnapshot {
+  id           String   @id @default(uuid())
+  userId       String
+  snapshotDate DateTime @default(now())
+
+  // JSON: { fluencyAvg, logicAvg, paceAvg, sessionsCount, totalDuration }
+  metrics String
+
+  // JSON: [ "语气词太多", "停顿过长" ]
+  weaknesses String
+
+  // JSON: [ "选题清晰", "语速控制好" ]
+  strengths String
+
+  // JSON: [ {date, fluencyAvg, logicAvg, paceAvg}, ... ]
+  trendData String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Credential {
+  id          String   @id @default(uuid())
+  userId      String
+  chainTxHash String   // Injective 交易哈希
+  milestone   String   // 里程碑名称
+  mintedAt    DateTime @default(now())
+  metadata    String?  // JSON
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

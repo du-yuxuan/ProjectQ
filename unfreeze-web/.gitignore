@@ -1,0 +1,31 @@
+# 依赖
+node_modules/
+dist/
+build/
+
+# 数据库
+*.db
+*.db-journal
+backend/data/
+
+# 环境
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Rust
+target/
+injective/target/
+
+# 日志
+*.log
+npm-debug.log*
+
+# Prisma
+backend/prisma/migrations/

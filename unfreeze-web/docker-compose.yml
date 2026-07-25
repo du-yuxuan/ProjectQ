@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  unfreeze:
+    build: .
+    ports:
+      - "3001:3001"
+    environment:
+      - DATABASE_URL=file:./data/dev.db
+      - PORT=3001
+      - STEPAUDIO_API_KEY=
+      - INJECTIVE_MNEMONIC=
+      - INJECTIVE_RPC=https://testnet-rpc.injective.dev
+    volumes:
+      - unfreeze-db:/app/backend/data
+    restart: unless-stopped
+
+volumes:
+  unfreeze-db:

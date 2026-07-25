@@ -1,0 +1,13 @@
+[profile.release]
+# CosmWasm 优化配置
+opt-level = 3
+debug = false
+rpath = false
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+
+[profile.dev]
+opt-level = 0
+debug = true

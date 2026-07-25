@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:descendantFocusability="beforeDescendants"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#000000">
+
+<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="vertical" android:padding="6dp"
+    android:focusable="true" android:focusableInTouchMode="true">
+
+    <!-- 顶部状态栏 -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="2dp">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gravity="center_vertical">
+            <TextView android:id="@+id/tvStatus" android:layout_width="0dp" android:layout_weight="1"
+                android:layout_height="wrap_content" android:text="● 未连接" android:textColor="#FF4444"
+                android:textSize="16sp" android:textStyle="bold"/>
+            <Button android:id="@+id/btnScan" android:text="连接" style="@style/BigBtn"
+                android:layout_width="wrap_content" android:layout_height="40dp" android:padding="8dp"
+                android:focusable="true" android:focusableInTouchMode="true"/>
+        </LinearLayout>
+        <TextView android:id="@+id/tvMode" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="等待连接戒指..." android:textColor="#888888" android:textSize="14sp"
+            android:focusable="false" android:paddingLeft="4dp"
+            android:singleLine="true" android:ellipsize="end"/>
+    </LinearLayout>
+
+    <!-- 扫描状态 + MAC -->
+    <TextView android:id="@+id/tvScanInfo" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="" android:textColor="#666666" android:textSize="12sp"
+        android:focusable="false" android:padding="2dp" android:singleLine="true" android:ellipsize="end"/>
+
+    <!-- 设备信息面板 -->
+    <TextView android:text="━━ 设备信息 ━━" style="@style/SecHeader"/>
+    <TextView android:id="@+id/tvDeviceInfo" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="未连接" android:textColor="#AAAAAA" android:textSize="14sp" android:padding="6dp"
+        android:background="#111" android:fontFamily="monospace"
+        android:focusable="false"/>
+    <Button android:id="@+id/btnRefreshInfo" android:text="刷新设备信息" style="@style/BigBtnFull"/>
+
+    <!-- IMU 面板 -->
+    <TextView android:text="━━ IMU ━━" style="@style/SecHeader"/>
+    <TextView android:id="@+id/tvImuStatus" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="IMU: 未开启" android:textColor="#FFA500" android:textSize="14sp" android:padding="4dp"
+        android:focusable="false"/>
+    <com.unfreeze.ringdebug.OrientationView android:id="@+id/orientView"
+        android:layout_width="180dp" android:layout_height="180dp"
+        android:layout_gravity="center" android:layout_margin="4dp"
+        android:focusable="false"/>
+    <TextView android:id="@+id/tvImuData" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="a(0,0,0) g(0,0,0)" android:textColor="#00FF88" android:textSize="13sp"
+        android:fontFamily="monospace" android:padding="4dp"
+        android:focusable="false"/>
+    <LinearLayout style="@style/BtnRow">
+        <Button android:id="@+id/btnSensorStart" android:text="开启IMU" style="@style/BigBtn"/>
+        <Button android:id="@+id/btnSensorStop" android:text="停止" style="@style/BigBtn"/>
+    </LinearLayout>
+
+    <!-- 事件流 -->
+    <TextView android:text="━━ 事件流 ━━" style="@style/SecHeader"/>
+    <TextView android:id="@+id/tvEvents" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:minHeight="40dp" android:text="无事件" android:textColor="#88CCFF" android:textSize="13sp"
+        android:padding="6dp" android:background="#111" android:fontFamily="monospace"
+        android:focusable="false" android:clickable="false" android:longClickable="false"/>
+
+    <!-- 原始数据面板 -->
+    <TextView android:text="━━ 原始数据 ━━" style="@style/SecHeader"/>
+    <TextView android:id="@+id/tvRawData" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:minHeight="20dp" android:text="等待数据..." android:textColor="#FFAA00" android:textSize="11sp"
+        android:padding="4dp" android:background="#0a0a0a" android:fontFamily="monospace"
+        android:focusable="false" android:maxLines="3" android:ellipsize="end"/>
+
+    <!-- 录音面板 -->
+    <TextView android:text="━━ 录音 ━━" style="@style/SecHeader"/>
+    <LinearLayout style="@style/BtnRow">
+        <Button android:id="@+id/btnAudioCount" android:text="数量" style="@style/BigBtn"/>
+        <Button android:id="@+id/btnAudioClear" android:text="清空" style="@style/BigBtn"/>
+    </LinearLayout>
+    <LinearLayout style="@style/BtnRow">
+        <Button android:id="@+id/btnIndexMinus" android:text="➖" style="@style/BigBtn"/>
+        <TextView android:id="@+id/tvIndex" android:layout_width="0dp" android:layout_weight="1"
+            android:layout_height="52dp" android:gravity="center" android:text="0"
+            android:textSize="20sp" android:textColor="#00FF88" android:background="#222" android:layout_margin="3dp"
+            android:focusable="false"/>
+        <Button android:id="@+id/btnIndexPlus" android:text="➕" style="@style/BigBtn"/>
+    </LinearLayout>
+    <Button android:id="@+id/btnAudioExtract" android:text="提取" style="@style/BigBtnFull"/>
+    <ProgressBar android:id="@+id/pbDownload" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:visibility="gone" android:max="100"/>
+
+    <!-- 调试日志 -->
+    <TextView android:text="━━ 日志 ━━" style="@style/SecHeader"/>
+    <Button android:id="@+id/btnClear" android:text="清屏" style="@style/BigBtnFull"/>
+    <TextView android:id="@+id/tvLog" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:minHeight="80dp" android:maxLines="8" android:ellipsize="start"
+        android:gravity="bottom|start" android:textSize="12sp" android:textColor="#00FF00"
+        android:fontFamily="monospace" android:background="#0a0a0a" android:padding="4dp"
+        android:focusable="false"/>
+</LinearLayout>
+</ScrollView>
