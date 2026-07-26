@@ -889,8 +889,8 @@ Transform:
   m_GameObject: {fileID: 164829750}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.24612, y: 0.97416, z: 1.335}
-  m_LocalScale: {x: 3.0509045, y: 3.0509045, z: 3.0509045}
+  m_LocalPosition: {x: -0.013783, y: 0.9604, z: 1.335}
+  m_LocalScale: {x: 1.0566287, y: 1.0566287, z: 1.0566287}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1702216470}
@@ -7466,18 +7466,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06671296a3c82446fab1bf9cfd2cdb79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletTextPrefab: {fileID: 0}
-  poolSize: 20
-  bulletLifetime: 4
-  floatSpeed: 0.3
-  floatSpread: 0.15
-  spawnOffset: {x: 0, y: 0.3, z: 0}
-  fontSize: 0.08
-  maxTextLength: 50
-  autoCreatePool: 1
-  transcriptColor: {r: 1, g: 1, b: 1, a: 0.9}
-  speciesColor: {r: 0.4, g: 0.9, b: 1, a: 0.9}
-  debugLog: 0
 --- !u!114 &1233614180
 MonoBehaviour:
   m_ObjectHideFlags: 0
