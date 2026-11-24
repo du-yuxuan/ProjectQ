@@ -871,8 +871,9 @@ namespace Q.Pico
         {
             isRunning = false;
 
-            // 关闭视频透视，恢复普通渲染
-            PXR_Manager.EnableVideoSeeThrough = false;
+            // 不关闭视频透视：PICO 空间应用始终需要 VST 作为背景。
+            // 如果在此关闭，整个画面会变黑，用户看到的就是"闪黑"。
+            // PXR_Manager.EnableVideoSeeThrough = false;
 
             if (globalGltfAsset != null)
             {
